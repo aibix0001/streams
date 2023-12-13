@@ -58,5 +58,5 @@ Session.vim
 tags
 
 # qcow2 images
-.qcow2
+*.qcow2
 
