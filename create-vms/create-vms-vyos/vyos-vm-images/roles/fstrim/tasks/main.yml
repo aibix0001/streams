@@ -1,0 +1,4 @@
+# Trim filesystems to minimize resulted image
+- name: Trim {{ vyos_write_root }}
+  become: true
+  command: fstrim {{ vyos_write_root }}

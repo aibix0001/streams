@@ -1,0 +1,14 @@
+---
+
+- hosts: router
+
+  connection: network_cli
+  gather_facts: 'no'
+
+  tasks:
+    - name: loopbacks
+      vyos_config:
+        lines:
+          - delete interfaces loopback lo address 10.10.255.{{ inventory_hostname[1:2] }}/32
+        save: true
+

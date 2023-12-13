@@ -1,0 +1,68 @@
+set interfaces ethernet eth0 address '10.20.30.29/24'
+set interfaces ethernet eth0 hw-id 'bc:24:11:54:58:f6'
+set interfaces ethernet eth1 address '10.20.79.9/24'
+set interfaces ethernet eth1 hw-id 'bc:24:11:94:2a:bc'
+set interfaces loopback lo address '10.10.255.29/32'
+set protocols bgp neighbor 10.10.255.21 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.21 description 'r21v'
+set protocols bgp neighbor 10.10.255.21 remote-as '65000'
+set protocols bgp neighbor 10.10.255.21 update-source 'lo'
+set protocols bgp neighbor 10.10.255.22 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.22 description 'r22v'
+set protocols bgp neighbor 10.10.255.22 remote-as '65000'
+set protocols bgp neighbor 10.10.255.22 update-source 'lo'
+set protocols bgp neighbor 10.10.255.23 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.23 description 'r23v'
+set protocols bgp neighbor 10.10.255.23 remote-as '65000'
+set protocols bgp neighbor 10.10.255.23 update-source 'lo'
+set protocols bgp neighbor 10.10.255.24 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.24 description 'r24v'
+set protocols bgp neighbor 10.10.255.24 remote-as '65000'
+set protocols bgp neighbor 10.10.255.24 update-source 'lo'
+set protocols bgp neighbor 10.10.255.25 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.25 description 'r25v'
+set protocols bgp neighbor 10.10.255.25 remote-as '65000'
+set protocols bgp neighbor 10.10.255.25 update-source 'lo'
+set protocols bgp neighbor 10.10.255.26 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.26 description 'r26v'
+set protocols bgp neighbor 10.10.255.26 remote-as '65000'
+set protocols bgp neighbor 10.10.255.26 update-source 'lo'
+set protocols bgp neighbor 10.10.255.27 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.27 description 'r27v'
+set protocols bgp neighbor 10.10.255.27 remote-as '65000'
+set protocols bgp neighbor 10.10.255.27 update-source 'lo'
+set protocols bgp neighbor 10.10.255.28 address-family ipv4-unicast route-reflector-client
+set protocols bgp neighbor 10.10.255.28 description 'r28v'
+set protocols bgp neighbor 10.10.255.28 remote-as '65000'
+set protocols bgp neighbor 10.10.255.28 update-source 'lo'
+set protocols bgp parameters router-id '10.10.255.29'
+set protocols bgp system-as '65000'
+set protocols ospf area 0 network '10.20.79.0/24'
+set protocols ospf area 0 network '10.10.255.29/32'
+set protocols ospf interface eth1
+set protocols ospf interface lo
+set protocols ospf parameters router-id '10.10.255.29'
+set service ntp allow-client address '0.0.0.0/0'
+set service ntp allow-client address '::/0'
+set service ntp server time1.vyos.net
+set service ntp server time2.vyos.net
+set service ntp server time3.vyos.net
+set service ssh port '22'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system console device ttyS0 speed '115200'
+set system domain-name 'hel.eth64.de'
+set system host-name 'r29v'
+set system login user vyos authentication encrypted-password '$6$IgaLmw04JL29JFH9$hUrM5sO9um8mfffUaMwfmWQvTuMx5yxDnQsN0po0orO4w9eSbZCdeZn/pr8tgYO1n3pDG1ZuIvy7IHeN1p4lz.'
+set system login user vyos authentication plaintext-password ''
+set system login user vyos authentication public-keys aibix@hel key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
+set system login user vyos authentication public-keys aibix@hel type 'ssh-rsa'
+set system name-server '1.1.1.1'
+set system syslog global facility all level 'info'
+set system syslog global facility local7 level 'debug'

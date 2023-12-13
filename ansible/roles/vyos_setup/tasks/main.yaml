@@ -1,0 +1,153 @@
+---
+
+  - name: set_hostname
+    vyos_config:
+      lines:
+        - set system host-name '{{ ansible_hostname }}'
+    tags: hostname
+    when: os == "vyos"
+    
+  - name: set_interface_vyos
+    vyos_config:
+      lines:
+        - set interfaces {{ item.interface_type }} {{ item.interface }} address '{{ item.ipv4_address }}'
+        - delete interfaces {{ item.interface_type }} {{ item.interface }} hw-id
+    loop: "{{ interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: interfaces
+    when: os == "vyos"
+
+  # - name: delete_hw_addresses_management
+  #   vyos_config:
+  #     lines:
+  #       - delete interces ethernet eth3 hw-id
+  #   tags: interfaces
+  #   when: os == "vyos"
+    
+  - name: set static routes
+    vyos_config:
+      lines:
+        - set protocols static route {{ item.destination }} next-hop {{ item.gateway }}
+    loop: "{{ static.routes }}"
+    loop_control:
+      label: "{{ item.destination }}"
+    tags: static_routes
+    when: os == "vyos" and static is defined
+    
+  - name: configure name-server
+    vyos_config:
+      lines:
+        - set system name-server 1.1.1.1
+    tags: nameserver
+    when: os == "vyos"
+    
+  - name: configure_ospf_parameters
+    vyos_config:
+      lines:
+        - set protocols ospf parameters router-id {{ ospf.router_id }}
+    tags: ospf
+    when: os == "vyos"
+
+  - name: configure_ospf_interface_and_area
+    vyos_config:
+      lines:
+        - set protocols ospf area {{ ospf.v4.area }} network {{ item.network }}
+        - set protocols ospf interface {{ item.interface }}
+    loop: "{{ ospf.v4.interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: ospf
+    when: os == "vyos"
+
+  - name: configure_ospf_default_information
+    vyos_config:
+      lines:
+          set protocols ospf default-information originate {{ ospf.v4.default_information }}
+    tags: ospf
+    when: os == "vyos" and ospf.v4.default_information is defined
+    
+  - name: configure_bgp_parameters
+    vyos_config:
+      lines:
+        - set protocols bgp parameters router-id {{ bgp.router_id }}
+        - set protocols bgp system-as {{ bgp.as }}
+    tags: bgp
+    when: os == "vyos"
+
+  - name: configure_bgp_networks
+    vyos_config:
+      lines:
+        - set protocols bgp address-family ipv4-unicast network {{ item }}
+    # loop: "{{ bgp.networks }}"
+    # loop_control:
+    #   label: "{{ item.networks }}"
+    with_items: "{{ bgp.networks.ipv4_unicast }}"
+    tags: bgp
+    when: os == "vyos" and bgp.networks is defined
+
+  - name: configure_bgp_neighbors_rr_client
+    vyos_config:
+      lines:
+        - set protocols bgp neighbor {{ item.ipv4_address }} address-family ipv4-unicast nexthop-self
+        - set protocols bgp neighbor {{ item.ipv4_address }} remote-as {{ item.remote_as }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} update-source {{ item.update_source }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} description {{ item.description }}
+    loop: "{{ bgp.neighbors_rr_client }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors_rr_client is defined
+    
+  - name: configure_bgp_neighbors_rr_server
+    vyos_config:
+      lines:
+        - set protocols bgp neighbor {{ item.ipv4_address }} address-family ipv4-unicast route-reflector-client
+        - set protocols bgp neighbor {{ item.ipv4_address }} remote-as {{ item.remote_as }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} update-source {{ item.update_source }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} description {{ item.description }}
+    loop: "{{ bgp.neighbors_rr_server }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors_rr_server is defined
+    
+  - name: configure_bgp_neighbors_rr_peer
+    vyos_config:
+      lines:
+        - set protocols bgp parameters cluster-id {{ item.cluster_id }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} address-family ipv4-unicast
+        - set protocols bgp neighbor {{ item.ipv4_address }} remote-as {{ item.remote_as }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} update-source {{ item.update_source }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} description {{ item.description }}
+    loop: "{{ bgp.neighbors_rr_peer }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors_rr_peer is defined
+    
+  - name: configure_bgp_neighbors
+    vyos_config:
+      lines:
+        - set protocols bgp neighbor {{ item.ipv4_address }} address-family ipv4-unicast
+        - set protocols bgp neighbor {{ item.ipv4_address }} remote-as {{ item.remote_as }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} update-source {{ item.update_source }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} description {{ item.description }}
+    loop: "{{ bgp.neighbors }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors is defined
+
+  - name: configure_nat
+    vyos_config:
+      lines:
+        - set nat {{ nat.type }} rule 1 outbound-interface name '{{ nat.interface }}'
+        - set nat {{ nat.type }} rule 1 translation address '{{ nat.translation }}'
+    tags: nat
+    when: os == "vyos" and nat is defined
+    
+  - name: save config
+    vyos_config:
+      save: true
+    tags: save

@@ -1,0 +1,38 @@
+---
+  - name: set_interface_mikrotik
+    community.routeros.command:
+      commands:
+        -  /ip address add address={{ item.ipv4_address }} interface={{ item.interface }}
+    loop: "{{ interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: interfaces
+    when: os == "mikrotik"
+
+  - name: configure_ospf_instance_area_v4
+    community.routeros.command:
+      commands:
+        - /routing ospf instance add disabled=no name={{ ospf.v4.instance }} router-id={{ ospf.router_id }}
+        - /routing ospf area add disabled=no instance={{ ospf.v4.instance }} name={{ ospf.v4.area }}
+    tags: ospf
+    when: os == "mikrotik"
+
+  - name: configure_ospf_interface_template_v4
+    community.routeros.command:
+      commands:
+        - /routing ospf interface-template add area={{ ospf.v4.area }} disabled=no interfaces={{ item.interface }} networks={{ item.network }}
+    loop: "{{ ospf.v4.interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: ospf
+    when: os == "mikrotik"
+    
+  - name: configure_bgp
+    community.routeros.command:
+      commands:
+        - /routing bgp connection add address-families=ip as={{ bgp.as }} local.address={{ bgp.router_id }} .role=ibgp name={{ item.description }} nexthop-choice=force-self output.default-originate=if-installed remote.address={{ item.ipv4_address }} .as={{ item.remote_as }} router-id={{ bgp.router_id }} routing-table=main
+    loop: "{{ bgp.neighbors }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "mikrotik"

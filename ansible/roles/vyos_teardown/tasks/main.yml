@@ -1,0 +1,124 @@
+---
+  - name: remove_nat
+    vyos_config:
+      lines:
+        - delete nat
+    tags: nat
+    when: os == "vyos" and nat is defined
+    
+  - name: remove_bgp_networks_vyos
+    vyos_config:
+      lines:
+        - delete protocols bgp address-family ipv4-unicast network {{ item }}
+    # loop: "{{ bgp.networks }}"
+    # loop_control:
+    #   label: "{{ item.networks }}"
+    with_items: "{{ bgp.networks.ipv4_unicast }}"
+    tags: bgp
+    when: os == "vyos" and bgp.networks is defined
+
+  - name: remove_bgp_neighbor_vyos_rr_client
+    vyos_config:
+      lines:
+        - delete protocols bgp neighbor {{ item.ipv4_address }}
+    loop: "{{ bgp.neighbors_rr_client }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors_rr_client is defined
+
+  - name: remove_bgp_neighbor_vyos_rr_server
+    vyos_config:
+      lines:
+        - delete protocols bgp neighbor {{ item.ipv4_address }}
+    loop: "{{ bgp.neighbors_rr_server }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors_rr_server is defined
+
+  - name: remove_bgp_neighbor_vyos_rr_peer
+    vyos_config:
+      lines:
+        - delete protocols bgp parameters cluster-id {{ item.cluster_id }}
+        - delete protocols bgp neighbor {{ item.ipv4_address }}
+    loop: "{{ bgp.neighbors_rr_peer }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors_rr_peer is defined
+
+  - name: remove_bgp_neighbor
+    vyos_config:
+      lines:
+        - delete protocols bgp neighbor {{ item.ipv4_address }}
+    loop: "{{ bgp.neighbors }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "vyos" and bgp.neighbors is defined
+
+  - name: remove_bgp
+    vyos_config:
+      lines:
+        - delete protocols bgp
+    tags: bgp
+    when: os == "vyos"
+
+  - name: remove_ospf_parameters
+    vyos_config:
+      lines:
+        - delete protocols ospf parameters router-id {{ ospf.router_id }}
+    tags: ospf
+    when: os == "vyos"
+
+  - name: remove_ospf_interface_and_area
+    vyos_config:
+      lines:
+        - delete protocols ospf area {{ ospf.v4.area }} network {{ item.network }}
+        - delete protocols ospf interface {{ item.interface }}
+    loop: "{{ ospf.v4.interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: ospf
+    when: os == "vyos"
+
+  - name: remove_ospf_default_information
+    vyos_config:
+      lines:
+          delete protocols ospf default-information originate {{ ospf.v4.default_information }}
+    tags: ospf
+    when: os == "vyos" and ospf.v4.default_information is defined
+
+  - name: remove_ospf_protocol
+    vyos_config:
+      lines:
+        - delete protocols ospf default-information
+        - delete protocols ospf area
+        - delete protocols ospf parameters
+    tags: ospf
+    when: os == "vyos"
+
+  - name: remove_static_routes
+    vyos_config:
+      lines:
+        - delete protocols static route {{ item.destination }}
+    loop: "{{ static.routes }}"
+    loop_control:
+      label: "{{ item.destination }}"
+    tags: static_routes
+    when: os == "vyos" and static is defined
+    
+  - name: remove_interface_vyos
+    vyos_config:
+      lines:
+        -  delete interfaces {{ item.interface_type }} {{ item.interface }} address {{ item.ipv4_address }}
+    loop: "{{ interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: interfaces
+    when: os == "vyos"
+
+  - name: save config
+    vyos_config:
+      save: true

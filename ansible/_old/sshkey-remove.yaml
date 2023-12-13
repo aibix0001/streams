@@ -1,0 +1,15 @@
+---
+
+- hosts: router
+
+  connection: network_cli
+  gather_facts: 'no'
+
+  tasks:
+    - name: Configure remote
+      vyos_config:
+        lines:
+          - delete system login user vyos authentication public-keys aibix@automation
+          - delete system login user vyos authentication public-keys gerd@bronco
+        save: true
+        

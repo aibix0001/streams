@@ -1,0 +1,37 @@
+---
+
+- hosts: router
+
+  connection: network_cli
+  gather_facts: 'no'
+
+  tasks:
+    - name: configure ospf
+      block:
+        - name: delete protocols
+          vyos_config:
+            lines:
+              - delete protocols
+
+        - name: configure ospf networks
+          with_items: "{{ ospf_network }}"
+          vyos_config:
+            lines:
+              - set protocols ospf area 0 network {{ item }}
+
+        - name: configure ospf interfaces
+          with_items: "{{ ospf_interface }}"
+          vyos_config:
+            lines:
+              - set protocols ospf interface {{ item }}
+
+        - name: configure ospf parameters
+          vyos_config:
+            lines:
+              - set protocols ospf parameters router-id 10.10.255.{{ inventory_hostname[1:2] }}
+      when: (ospf_network is defined) and (ospf_interface is defined)
+
+    - name: save config
+      vyos_config:
+        save: true
+

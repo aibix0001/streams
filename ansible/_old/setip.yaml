@@ -1,0 +1,24 @@
+---
+
+- hosts: router
+
+  connection: network_cli
+  gather_facts: 'no'
+
+  tasks:
+    - name: r7v
+      when: inventory_hostname == 'r7v'
+      vyos_config:
+        lines:
+          - set interfaces ethernet eth0 address 10.10.67.7/24
+          - set interfaces ethernet eth1 address 10.10.37.7/24
+          - set interfaces ethernet eth2 address 10.10.78.7/24
+        save: true
+    - name: r8v
+      when: inventory_hostname == 'r8v'
+      vyos_config:
+        lines:
+          - set interfaces ethernet eth0 address 10.10.78.8/24
+          - set interfaces ethernet eth1 address 10.10.48.8/24
+        save: true
+        

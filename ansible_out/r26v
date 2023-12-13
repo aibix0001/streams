@@ -1,0 +1,48 @@
+set interfaces ethernet eth0 address '10.20.56.6/24'
+set interfaces ethernet eth0 hw-id 'bc:24:11:f7:0a:fb'
+set interfaces ethernet eth1 address '10.20.26.6/24'
+set interfaces ethernet eth1 hw-id 'bc:24:11:c0:09:4c'
+set interfaces ethernet eth2 address '10.20.67.6/24'
+set interfaces ethernet eth2 hw-id 'bc:24:11:96:d4:51'
+set interfaces ethernet eth3 address '10.20.30.26/24'
+set interfaces ethernet eth3 hw-id 'bc:24:11:1c:56:45'
+set interfaces loopback lo address '10.10.255.26/32'
+set protocols bgp neighbor 10.10.255.29 address-family ipv4-unicast nexthop-self
+set protocols bgp neighbor 10.10.255.29 description 'r29v'
+set protocols bgp neighbor 10.10.255.29 remote-as '65000'
+set protocols bgp neighbor 10.10.255.29 update-source 'lo'
+set protocols bgp parameters router-id '10.10.255.26'
+set protocols bgp system-as '65000'
+set protocols ospf area 0 network '10.20.56.0/24'
+set protocols ospf area 0 network '10.20.26.0/24'
+set protocols ospf area 0 network '10.20.67.0/24'
+set protocols ospf area 0 network '10.10.255.26/32'
+set protocols ospf interface eth0
+set protocols ospf interface eth1
+set protocols ospf interface eth2
+set protocols ospf interface lo
+set protocols ospf parameters router-id '10.10.255.26'
+set service ntp allow-client address '0.0.0.0/0'
+set service ntp allow-client address '::/0'
+set service ntp server time1.vyos.net
+set service ntp server time2.vyos.net
+set service ntp server time3.vyos.net
+set service ssh port '22'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system console device ttyS0 speed '115200'
+set system domain-name 'hel.eth64.de'
+set system host-name 'r26v'
+set system login user vyos authentication encrypted-password '$6$FL5NYRJtlTnziShU$/m5boKV4WLdfaqirymDo1jUKKoQDrHv27H10hOD.dEDQDUCxBTkxL0Kui/9uLeLi6qTA4qhBDnBQfivp4ZvBZ1'
+set system login user vyos authentication plaintext-password ''
+set system login user vyos authentication public-keys aibix@hel key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
+set system login user vyos authentication public-keys aibix@hel type 'ssh-rsa'
+set system name-server '1.1.1.1'
+set system syslog global facility all level 'info'
+set system syslog global facility local7 level 'debug'

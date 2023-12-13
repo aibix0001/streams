@@ -1,0 +1,13 @@
+# Ansible
+*.retry
+*.log
+
+# images
+*.img
+*.qcow2
+*.ova
+*.vhd
+*.box
+
+# Python
+.python-version

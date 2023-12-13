@@ -1,0 +1,38 @@
+---
+  - name: remove_interface_mikrotik
+    community.routeros.command:
+      commands:
+        -  /ip address remove [find where address="{{ item.ipv4_address }}"]
+    loop: "{{ interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: interfaces
+    when: os == "mikrotik"
+
+  - name: remove_ospf_interface_template_v4
+    community.routeros.command:
+      commands:
+        - /routing ospf interface-template remove [find interfaces={{ item.interface }}]
+    loop: "{{ ospf.v4.interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: ospf
+    when: os == "mikrotik"
+    
+  - name: remove_ospf_instance_area_v4
+    community.routeros.command:
+      commands:
+        - /routing ospf area remove [find name={{ ospf.v4.area }}]
+        - /routing ospf instance remove [find name={{ ospf.v4.instance }}]
+    tags: ospf
+    when: os == "mikrotik"
+
+  - name: remove_bgp_mikrotik
+    community.routeros.command:
+      commands:
+        -  /routing bgp connection remove numbers={{ item.description }}
+    loop: "{{ bgp.neighbors }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    tags: bgp
+    when: os == "mikrotik"

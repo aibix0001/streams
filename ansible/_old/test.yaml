@@ -1,0 +1,22 @@
+---
+
+- hosts: router
+
+  connection: network_cli
+  gather_facts: 'no'
+
+  tasks:
+    - debug:
+        msg: "set interface {{ item.interface_type }} {{ item.interface }} address {{ item.ipv4_address }}"
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.interface }}"
+
+    - debug:
+b
+msg: "set interface {{ item.interface_type }} {{ item.interface }} hw_addr {{ item.hw_address }}"
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.interface }}"
+      when: item.hw_address is defined
+      

@@ -1,0 +1,46 @@
+set interfaces ethernet eth0 address 'dhcp'
+set interfaces ethernet eth0 hw-id 'bc:24:11:73:65:80'
+set interfaces ethernet eth1 address '10.20.15.1/24'
+set interfaces ethernet eth1 hw-id 'bc:24:11:de:32:36'
+set interfaces ethernet eth2 address '10.20.12.1/24'
+set interfaces ethernet eth2 hw-id 'bc:24:11:26:55:60'
+set interfaces ethernet eth3 address '10.20.30.21/24'
+set interfaces ethernet eth3 hw-id 'bc:24:11:5b:f3:cf'
+set interfaces loopback lo address '10.10.255.21/32'
+set policy prefix-list default-ospf rule 1 action 'permit'
+set policy prefix-list default-ospf rule 1 prefix '0.0.0.0/0'
+set policy route-map OSPF-deny-default-IN rule 10 action 'deny'
+set policy route-map OSPF-deny-default-IN rule 10 match ip address prefix-list 'default-ospf'
+set policy route-map OSPF-deny-default-IN rule 20 action 'permit'
+set protocols bgp neighbor 10.10.255.29 address-family ipv4-unicast nexthop-self
+set protocols bgp neighbor 10.10.255.29 description 'r29v'
+set protocols bgp neighbor 10.10.255.29 remote-as '65000'
+set protocols bgp neighbor 10.10.255.29 update-source 'lo'
+set protocols bgp parameters router-id '10.10.255.21'
+set protocols bgp system-as '65000'
+set protocols ospf area 0 network '10.20.15.0/24'
+set protocols ospf area 0 network '10.20.12.0/24'
+set protocols ospf area 0 network '10.10.255.21/32'
+set protocols ospf interface eth1
+set protocols ospf interface eth2
+set protocols ospf interface lo
+set protocols ospf parameters router-id '10.10.255.21'
+set service ssh port '22'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system console device ttyS0 speed '115200'
+set system domain-name 'hel.eth64.de'
+set system host-name 'r21v'
+set system login user vyos authentication encrypted-password '$6$ygmM3YrN3F717GfW$N.PCnjD45fAzyh6JGRmLgGRonf45x3Gur.wbpMoelq7r.6C9tsSuqdoOcjdI2pstiT4j.6g8iVWeEYXCL0jBw0'
+set system login user vyos authentication plaintext-password ''
+set system login user vyos authentication public-keys aibix@hel key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
+set system login user vyos authentication public-keys aibix@hel type 'ssh-rsa'
+set system name-server '1.1.1.1'
+set system syslog global facility all level 'info'
+set system syslog global facility local7 level 'debug'

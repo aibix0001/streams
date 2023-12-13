@@ -1,0 +1,56 @@
+set interfaces ethernet eth0 address 'dhcp'
+set interfaces ethernet eth0 hw-id '00:04:18:a1:02:00'
+set interfaces ethernet eth0 offload gro
+set interfaces ethernet eth0 offload gso
+set interfaces ethernet eth0 offload sg
+set interfaces ethernet eth0 offload tso
+set interfaces ethernet eth0 vrf 'MGMT'
+set interfaces ethernet eth1 address '10.10.12.2/24'
+set interfaces ethernet eth1 hw-id '00:04:18:f1:02:01'
+set interfaces ethernet eth2 address '10.2.12.2/24'
+set interfaces ethernet eth2 hw-id '00:04:18:f1:02:02'
+set interfaces ethernet eth3 address '10.10.23.2/24'
+set interfaces ethernet eth3 hw-id '00:04:18:f1:02:03'
+set interfaces ethernet eth4 address '10.10.26.2/24'
+set interfaces ethernet eth4 hw-id '00:04:18:f1:02:04'
+set interfaces loopback lo address '10.10.255.2/32'
+set protocols bgp neighbor 10.10.255.9 address-family ipv4-unicast nexthop-self
+set protocols bgp neighbor 10.10.255.9 description 'r9v'
+set protocols bgp neighbor 10.10.255.9 remote-as '65000'
+set protocols bgp neighbor 10.10.255.9 update-source 'lo'
+set protocols bgp neighbor 10.10.255.10 address-family ipv4-unicast nexthop-self
+set protocols bgp neighbor 10.10.255.10 description 'r10m'
+set protocols bgp neighbor 10.10.255.10 remote-as '65000'
+set protocols bgp neighbor 10.10.255.10 update-source 'lo'
+set protocols bgp parameters router-id '10.10.255.2'
+set protocols bgp system-as '65000'
+set protocols ospf area 0 network '10.10.12.0/24'
+set protocols ospf area 0 network '10.2.12.0/24'
+set protocols ospf area 0 network '10.10.23.0/24'
+set protocols ospf area 0 network '10.10.26.0/24'
+set protocols ospf area 0 network '10.10.255.2/32'
+set protocols ospf interface eth1
+set protocols ospf interface eth2
+set protocols ospf interface eth3
+set protocols ospf interface eth4
+set protocols ospf interface lo
+set protocols ospf parameters router-id '10.10.255.2'
+set service ntp server 1.pool.ntp.org
+set service ntp server 2.pool.ntp.org
+set service ssh client-keepalive-interval '180'
+set service ssh port '22'
+set service ssh vrf 'MGMT'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system host-name 'r2v'
+set system login user vyos authentication encrypted-password '$6$rounds=656000$joT3WWEeP4bHvPDC$.RmChhyPkXilfv2H7qk3XWyeIKI4qZ/3r40etuf1n2iWwEPcVuCA4TeSnYedtkI0rNTbp6FympDm5V3OdvswA/'
+set system login user vyos authentication public-keys aibix@hel key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
+set system login user vyos authentication public-keys aibix@hel type 'ssh-rsa'
+set system name-server '1.1.1.1'
+set vrf name MGMT table '2030'

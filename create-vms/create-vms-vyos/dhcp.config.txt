@@ -1,0 +1,45 @@
+                {
+                    "hw-address": "02:04:18:A1:01:00",
+                    "ip-address": "10.20.30.1",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:02:00",
+                    "ip-address": "10.20.30.2",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:03:00",
+                    "ip-address": "10.20.30.3",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:04:00",
+                    "ip-address": "10.20.30.4",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:05:00",
+                    "ip-address": "10.20.30.5",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:06:00",
+                    "ip-address": "10.20.30.6",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:07:00",
+                    "ip-address": "10.20.30.7",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:08:00",
+                    "ip-address": "10.20.30.8",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A1:09:00",
+                    "ip-address": "10.20.30.9",
+                    "client-classes": [ "KnownClients" ]
+                },

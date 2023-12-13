@@ -1,0 +1,5 @@
+- name: Download VyOS ISO release
+  get_url:
+    url: "{{ vyos_iso_url }}"
+    dest: "{{ vyos_iso_local }}"
+    force: no

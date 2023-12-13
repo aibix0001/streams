@@ -1,0 +1,29 @@
+---
+- name: vrf config
+  hosts: router
+  vars:
+    ansible_user: vyos
+    ansible_network_os: vyos.vyos.vyos
+  gather_facts: no
+
+  connection: network_cli
+  
+  tasks:
+    - name: configure mgmt vrf
+      vyos_config:
+        lines:
+          - set vrf name 'MGMT' table 2030
+          - set vrf bind-to-all
+          - set interfaces ethernet eth0 vrf 'MGMT'
+          - set service ssh vrf 'MGMT'
+          - set service ssh port '22'
+      tags: vyos,first
+      when: os == "vyos"
+      
+    - name: second run
+      vyos_config:
+        lines:
+          - delete vrf bind-to-all
+      tags: vyos,second
+      when: os == "vyos"
+      

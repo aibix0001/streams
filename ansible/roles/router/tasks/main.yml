@@ -1,0 +1,36 @@
+---
+  - name: set_interface_vyos
+    vyos_config:
+      lines:
+        -  set interfaces {{ item.interface_type }} {{ item.interface }} address {{ item.ipv4_address }}
+    loop: "{{ interfaces }}"
+    loop_control:
+      label: "{{ item.interface }}"
+    tags: set_interface
+
+  - name: configure_bgp_parameters
+    vyos_config:
+      lines:
+        - set protocols bgp parameters router-id {{ bgp.router_id }}
+        - set protocols bgp system-as {{ bgp.as }}
+
+  - name: configure_bgp_networks
+    vyos_config:
+      lines:
+        - set protocols bgp address-family ipv4-unicast network {{ item.network }}
+    loop: "{{ bgp.networks }}"
+    loop_control:
+      label: "{{ item.networks }}"
+    when: bgp.networks is defined
+
+  - name: configure_bgp_neighbors
+    vyos_config:
+      lines:
+        - set protocols bgp neighbor {{ item.ipv4_address }} address-family ipv4-unicast nexthop-self
+        - set protocols bgp neighbor {{ item.ipv4_address }} remote-as {{ item.remote_as }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} update-source {{ item.update_source }}
+        - set protocols bgp neighbor {{ item.ipv4_address }} description {{ item.description }}
+    loop: "{{ bgp.neighbors }}"
+    loop_control:
+      label: "{{ item.ipv4_address }}"
+    

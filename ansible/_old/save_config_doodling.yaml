@@ -1,0 +1,11 @@
+---
+- name: Vyos Kram
+  hosts: router
+  gather_facts: no
+  tasks:
+  - name: configurable backup path
+    vyos_config:
+      backup: yes
+      backup_options:
+        filename: "{{ inventory_hostname }}"
+        dir_path: /home/aibix/lnr/ansible_out/doodling

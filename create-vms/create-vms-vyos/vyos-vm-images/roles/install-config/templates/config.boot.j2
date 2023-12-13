@@ -1,0 +1,51 @@
+system {
+    host-name vyos
+    login {
+        user vyos {
+            authentication {
+{% if cloud_init == "true" and not ( keep_user is defined and keep_user == "true" ) %}
+                encrypted-password "*"
+{% else %}
+                encrypted-password "$6$MjV2YvKQ56q$QbL562qhRoyUu8OaqrXagicvcsNpF1HssCY06ZxxghDJkBCfSfTE/4FlFB41xZcd/HqYyVBuRt8Zyq3ozJ0dc."
+{% endif %}
+                plaintext-password ""
+            }
+{% if vyos_version | regex_search('(^1\.2)') %}
+            level admin
+{% endif %}
+        }
+    }
+    syslog {
+        global {
+            facility all {
+                level notice
+            }
+            facility protocols {
+                level debug
+            }
+        }
+    }
+    ntp {
+        server "time1.vyos.net"
+        server "time2.vyos.net"
+        server "time3.vyos.net"
+    }
+    config-management {
+        commit-revisions 100
+    }
+}
+interfaces {
+{% if enable_dhcp %}
+    ethernet eth0 {
+        address dhcp
+    }
+{% endif %}
+    loopback lo {
+    }
+}
+{% if enable_ssh %}
+service {
+    ssh {
+    }
+}
+{% endif %}

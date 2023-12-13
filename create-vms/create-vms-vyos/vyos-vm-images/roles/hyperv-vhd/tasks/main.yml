@@ -1,0 +1,2 @@
+- name: Convert raw to "{{ vyos_format }}"
+  command: qemu-img convert -f raw "{{ vyos_raw_img }}" -O "{{ vyos_format }}" -o subformat=dynamic  "{{ vyos_hyperv_img }}"

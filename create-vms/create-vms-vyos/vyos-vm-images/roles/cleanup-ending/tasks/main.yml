@@ -1,0 +1,29 @@
+- name: Delete RAW image
+  file:
+    path: "{{ vyos_raw_img }}"
+    state: absent
+
+- name: Delete PXE folder
+  file:
+    path: "/tmp/vyos-pxe-{{ vyos_version }}{{ ci_tag  | default() }}"
+    state: absent
+  when:
+    - pxe is defined
+    - pxe == "true"
+
+- name: Delete Release key
+  file:
+    path: "{{ vyos_key_local }}"
+    state: absent
+
+- name: Delete extracted squashfs path
+  become: true
+  file:
+    path: "{{ vyos_install_root }}"
+    state: absent
+
+- name: Delete temp iso creation path
+  become: true
+  file:
+    path: "/tmp/live-{{ vyos_version }}"
+    state: absent

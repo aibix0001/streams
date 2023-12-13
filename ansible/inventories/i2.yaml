@@ -1,0 +1,1182 @@
+router:
+  vars:
+    aibix_pubkey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
+    aibix_pubkey_id: aibix@hel
+    aibix_pubkey_type: 'ssh-rsa'
+    
+
+  hosts:
+    r1v:
+      os: "vyos"
+      ansible_host: 10.20.30.1
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.1/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: dhcp
+          hw_address: 00:50:56:01:0e:cc
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.15.1/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.12.1/24
+        - interface: eth4
+          interface_type: ethernet
+          ipv4_address: 10.1.11.1/24
+      ospf:
+        router_id: 10.10.255.1
+        default_information: originate
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth1
+              network: 10.10.15.0/24
+            - interface: eth2
+              network: 10.10.12.0/24
+            - interface: eth4
+              network: 10.1.11.0/24
+            - interface: lo
+              network: 10.10.255.1/32
+      bgp:
+        router_id: 10.10.255.1
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r2v:
+      os: "vyos"
+      ansible_host: 10.20.30.2
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.2/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.12.2/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.26.2/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.23.2/24
+        - interface: eth4
+          interface_type: ethernet
+          ipv4_address: 10.2.12.2/24
+      ospf:
+        router_id: 10.10.255.2
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.12.0/24
+            - interface: eth1
+              network: 10.10.26.0/24
+            - interface: eth2
+              network: 10.10.23.0/24
+            - interface: eth4
+              network: 10.2.12.0/24
+            - interface: lo
+              network: 10.10.255.2/32
+      bgp:
+        router_id: 10.10.255.2
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r3v:
+      os: "vyos"
+      ansible_host: 10.20.30.3
+      ansible_user: vyos
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.3/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.23.3/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.37.3/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.34.3/24
+      ospf:
+        router_id: 10.10.255.3
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.23.0/24
+            - interface: eth1
+              network: 10.10.37.0/24
+            - interface: eth2
+              network: 10.10.34.0/24
+            - interface: lo
+              network: 10.10.255.3/32
+      bgp:
+        router_id: 10.10.255.3
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r4v:
+      os: "vyos"
+      ansible_host: 10.20.30.4
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.4/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.34.4/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.48.4/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 172.16.4.1/24
+      ospf:
+        router_id: 10.10.255.4
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.34.0/24
+            - interface: eth1
+              network: 10.10.48.0/24
+            - interface: lo
+              network: 10.10.255.4/32
+      bgp:
+        router_id: 10.10.255.4
+        as: 65000
+        networks:
+          ipv4_unicast:
+            - 172.16.4.0/24
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r5v:
+      os: "vyos"
+      ansible_host: 10.20.30.5
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.5/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 172.16.5.1/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.15.5/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.56.5/24
+      ospf:
+        router_id: 10.10.255.5
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth1
+              network: 10.10.15.0/24
+            - interface: eth2
+              network: 10.10.56.0/24
+            - interface: lo
+              network: 10.10.255.5/32
+      bgp:
+        router_id: 10.10.255.5
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r6v:
+      os: "vyos"
+      ansible_host: 10.20.30.6
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.6/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.56.6/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.26.6/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.67.6/24
+      ospf:
+        router_id: 10.10.255.6
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.56.0/24
+            - interface: eth1
+              network: 10.10.26.0/24
+            - interface: eth2
+              network: 10.10.67.0/24
+            - interface: lo
+              network: 10.10.255.6/32
+      bgp:
+        router_id: 10.10.255.6
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r7v:
+      os: "vyos"
+      ansible_host: 10.20.30.7
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.7/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.67.7/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.37.7/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.78.7/24
+        - interface: eth4
+          interface_type: ethernet
+          ipv4_address: 10.10.79.7/24
+      ospf:
+        router_id: 10.10.255.7
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.67.0/24
+            - interface: eth1
+              network: 10.10.37.0/24
+            - interface: eth2
+              network: 10.10.78.0/24
+            - interface: eth4
+              network: 10.10.79.0/24
+            - interface: lo
+              network: 10.10.255.7/32
+      bgp:
+        router_id: 10.10.255.7
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r8v:
+      os: "vyos"
+      ansible_host: 10.20.30.8
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.8/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.78.8/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.48.8/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 172.16.8.1/24
+        - interface: eth4
+          interface_type: ethernet
+          ipv4_address: 10.8.10.8/24
+      ospf:
+        router_id: 10.10.255.8
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.78.0/24
+            - interface: eth1
+              network: 10.10.48.0/24
+            - interface: eth4
+              network: 10.8.10.0/24
+            - interface: lo
+              network: 10.10.255.8/32
+      bgp:
+        router_id: 10.10.255.8
+        as: 65000
+        networks:
+          ipv4_unicast:
+            - 172.16.8.0/24
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          # - ipv4_address: 10.10.255.11
+          #   description: r11m
+          #   remote_as: 65000
+          #   update_source: lo
+          # - ipv4_address: 10.10.255.12
+          #   description: r12m
+          #   remote_as: 65000
+          #   update_source: lo
+
+
+    r9v:
+      os: "vyos"
+      ansible_host: 10.20.30.9
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.9/32
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.79.9/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.9.10.9/24
+      ospf:
+        router_id: 10.10.255.9
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth1
+              network: 10.10.79.0/24
+            - interface: eth2
+              network: 10.9.10.0/24
+            - interface: lo
+              network: 10.10.255.9/32
+      bgp:
+        router_id: 10.10.255.9
+        as: 65000
+        #networks:
+        neighbors_rr_server:
+          - ipv4_address: 10.10.255.1
+            description: r1v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.2
+            description: r2v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.3
+            description: r3v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.4
+            description: r4v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.5
+            description: r5v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.6
+            description: r6v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.7
+            description: r7v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.8
+            description: r8v
+            remote_as: 65000
+            update_source: lo
+
+        neighbors_rr_peer:
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+            cluster_id: 10.10.255.255
+
+        neighbors:
+          - ipv4_address: 10.10.255.11
+            description: r11m
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.12
+            description: r12m
+            remote_as: 65000
+            update_source: lo
+
+
+    r10m:
+      os: "mikrotik"
+      ansible_host: 10.20.30.10
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.10/32
+        - interface: r8v
+          interface_type: ethernet
+          ipv4_address: 10.8.10.10/24
+        - interface: r9v
+          interface_type: ethernet
+          ipv4_address: 10.9.10.10/24
+      ospf:
+        router_id: 10.10.255.10
+        v4:
+          instance: ospf-instance-v4
+          area: ospf-area-v4
+          interfaces:
+            - interface: r9v
+              network: 10.9.10.0/24
+            - interface: r8v
+              network: 10.8.10.0/24
+            - interface: lo
+              network: 10.10.255.10/32
+        v6:
+          instance: ospf-instance-b6
+          area: ospf-area-v6
+          interfaces:
+            - interface: r8v
+              network: fd00:8:10::/64
+            - interface: r9v
+              network: fd00:9:10::/64
+            - interface: lo
+              network: fd00:255::10/64
+      bgp:
+        router_id: 10.10.255.10
+        as: 65000
+        #networks:
+        neighbors:
+          - ipv4_address: 10.10.255.1
+            description: r1v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.2
+            description: r2v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.3
+            description: r3v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.4
+            description: r4v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.5
+            description: r5v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.6
+            description: r6v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.7
+            description: r7v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.8
+            description: r8v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.11
+            description: r11m
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.12
+            description: r12m
+            remote_as: 65000
+            update_source: lo
+
+
+    r11m:
+      os: "mikrotik"
+      ansible_host: 10.20.30.11
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.11/32
+        - interface: WAN
+          interface_type: ethernet
+          ipv4_address: dhcp
+          hw_address: 00:50:56:00:BE:28
+        - interface: r1v
+          interface_type: ethernet
+          ipv4_address: 10.1.11.11/24
+        - interface: r12m
+          interface_type: ethernet
+          ipv4_address: 10.11.12.11/24
+      ospf:
+        router_id: 10.10.255.11
+        v4:
+          instance: ospf-instance-v4
+          area: ospf-area-v4
+          interfaces:
+            - interface: r12m
+              network: 10.11.12.0/24
+            - interface: r1v
+              network: 10.1.11.0/24
+            - interface: lo
+              network: 10.10.255.11/32
+        v6:
+          instance: ospf-instance-b6
+          area: ospf-area-v6
+          interfaces:
+            - interface: r12m
+              network: fd00:11:12::/64
+            - interface: lo
+              network: fd00:255::11/64
+      bgp:
+        router_id: 10.10.255.11
+        as: 65000
+        #networks:
+        neighbors:
+          - ipv4_address: 10.10.255.1
+            description: r1v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.2
+            description: r2v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.3
+            description: r3v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.4
+            description: r4v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.5
+            description: r5v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.6
+            description: r6v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.7
+            description: r7v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.8
+            description: r8v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.12
+            description: r12m
+            remote_as: 65000
+            update_source: lo
+
+
+    r12m:
+      os: "mikrotik"
+      ansible_host: 10.20.30.12
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.12/32
+        - interface: r11m
+          interface_type: ethernet
+          ipv4_address: 10.11.12.12/24
+        - interface: r2v
+          interface_type: ethernet
+          ipv4_address: 10.2.12.12/24
+        - interface: r13m
+          interface_type: ethernet
+          ipv4_address: 10.11.13.12/24
+      ospf:
+        router_id: 10.10.255.12
+        v4:
+          instance: ospf-instance-v4
+          area: ospf-area-v4
+          interfaces:
+            - interface: r11m
+              network: 10.11.12.0/24
+            - interface: r2v
+              network: 10.2.12.0/24
+            - interface: lo
+              network: 10.10.255.12/32
+        v6:
+          instance: ospf-instance-b6
+          area: ospf-area-v6
+          interfaces:
+            - interface: r11m
+              network: fd00:11:12::/64
+            - interface: lo
+              network: fd00:255::12/64
+      bgp:
+        router_id: 10.10.255.12
+        as: 65000
+        #networks:
+        neighbors:
+          - ipv4_address: 10.10.255.1
+            description: r1v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.2
+            description: r2v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.3
+            description: r3v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.4
+            description: r4v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.5
+            description: r5v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.6
+            description: r6v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.7
+            description: r7v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.8
+            description: r8v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.9
+            description: r9v
+            remote_as: 65000
+            update_source: lo
+
+          - ipv4_address: 10.10.255.10
+            description: r10m
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.11
+            description: r11m
+            remote_as: 65000
+            update_source: lo
+
+    r21v:
+      os: "vyos"
+      ansible_host: 10.20.30.21
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.1/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: dhcp
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.15.1/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.12.1/24
+      ospf:
+        router_id: 10.10.255.1
+        default_information: originate
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth1
+              network: 10.10.15.0/24
+            - interface: eth2
+              network: 10.10.12.0/24
+            - interface: lo
+              network: 10.10.255.1/32
+      bgp:
+        router_id: 10.10.255.1
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r22v:
+      os: "vyos"
+      ansible_host: 10.20.30.22
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.2/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.12.2/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.26.2/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.23.2/24
+      ospf:
+        router_id: 10.10.255.2
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.12.0/24
+            - interface: eth1
+              network: 10.10.26.0/24
+            - interface: eth2
+              network: 10.10.23.0/24
+            - interface: lo
+              network: 10.10.255.2/32
+      bgp:
+        router_id: 10.10.255.2
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r23v:
+      os: "vyos"
+      ansible_host: 10.20.30.23
+      ansible_user: vyos
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.3/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.23.3/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.37.3/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.34.3/24
+      ospf:
+        router_id: 10.10.255.3
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.23.0/24
+            - interface: eth1
+              network: 10.10.37.0/24
+            - interface: eth2
+              network: 10.10.34.0/24
+            - interface: lo
+              network: 10.10.255.3/32
+      bgp:
+        router_id: 10.10.255.3
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r24v:
+      os: "vyos"
+      ansible_host: 10.20.30.24
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.4/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.34.4/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.48.4/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 172.16.4.1/24
+      ospf:
+        router_id: 10.10.255.4
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.34.0/24
+            - interface: eth1
+              network: 10.10.48.0/24
+            - interface: lo
+              network: 10.10.255.4/32
+      bgp:
+        router_id: 10.10.255.4
+        as: 65000
+        networks:
+          ipv4_unicast:
+            - 172.16.24.0/24
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r25v:
+      os: "vyos"
+      ansible_host: 10.20.30.25
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.5/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 172.16.5.1/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.15.5/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.56.5/24
+      ospf:
+        router_id: 10.10.255.5
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth1
+              network: 10.10.15.0/24
+            - interface: eth2
+              network: 10.10.56.0/24
+            - interface: lo
+              network: 10.10.255.5/32
+      bgp:
+        router_id: 10.10.255.5
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r26v:
+      os: "vyos"
+      ansible_host: 10.20.30.26
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.6/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.56.6/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.26.6/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.67.6/24
+      ospf:
+        router_id: 10.10.255.6
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.56.0/24
+            - interface: eth1
+              network: 10.10.26.0/24
+            - interface: eth2
+              network: 10.10.67.0/24
+            - interface: lo
+              network: 10.10.255.6/32
+      bgp:
+        router_id: 10.10.255.6
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r27v:
+      os: "vyos"
+      ansible_host: 10.20.30.27
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.7/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.67.7/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.37.7/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.10.78.7/24
+        - interface: eth4
+          interface_type: ethernet
+          ipv4_address: 10.10.79.7/24
+      ospf:
+        router_id: 10.10.255.7
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.67.0/24
+            - interface: eth1
+              network: 10.10.37.0/24
+            - interface: eth2
+              network: 10.10.78.0/24
+            - interface: eth4
+              network: 10.10.79.0/24
+            - interface: lo
+              network: 10.10.255.7/32
+      bgp:
+        router_id: 10.10.255.7
+        as: 65000
+        #networks:
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r28v:
+      os: "vyos"
+      ansible_host: 10.20.30.28
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.8/32
+        - interface: eth0
+          interface_type: ethernet
+          ipv4_address: 10.10.78.8/24
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.48.8/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 172.16.8.1/24
+        - interface: eth4
+          interface_type: ethernet
+          ipv4_address: 10.8.10.8/24
+      ospf:
+        router_id: 10.10.255.8
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth0
+              network: 10.10.78.0/24
+            - interface: eth1
+              network: 10.10.48.0/24
+            - interface: lo
+              network: 10.10.255.8/32
+      bgp:
+        router_id: 10.10.255.8
+        as: 65000
+        networks:
+          ipv4_unicast:
+            - 172.16.28.0/24
+        neighbors_rr_client:
+          - ipv4_address: 10.10.255.9
+            description: r29v
+            remote_as: 65000
+            update_source: lo
+
+
+    r29v:
+      os: "vyos"
+      ansible_host: 10.20.30.29
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.10.255.9/32
+        - interface: eth1
+          interface_type: ethernet
+          ipv4_address: 10.10.79.9/24
+        - interface: eth2
+          interface_type: ethernet
+          ipv4_address: 10.9.10.9/24
+      ospf:
+        router_id: 10.10.255.9
+        v4:
+          area: 0
+          interfaces:
+            - interface: eth1
+              network: 10.10.79.0/24
+            - interface: eth2
+              network: 10.9.10.0/24
+            - interface: lo
+              network: 10.10.255.9/32
+      bgp:
+        router_id: 10.10.255.9
+        as: 65000
+        #networks:
+        neighbors_rr_server:
+          - ipv4_address: 10.10.255.1
+            description: r21v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.2
+            description: r22v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.3
+            description: r23v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.4
+            description: r24v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.5
+            description: r25v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.6
+            description: r26v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.7
+            description: r27v
+            remote_as: 65000
+            update_source: lo
+          - ipv4_address: 10.10.255.8
+            description: r28v
+            remote_as: 65000
+            update_source: lo
+

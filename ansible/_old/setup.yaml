@@ -1,0 +1,117 @@
+---
+
+- hosts: routers
+
+  connection: network_cli
+  gather_facts: 'no'
+
+  tasks:
+    #
+    # set interfaces
+    #
+    - name: set_interface
+      vyos_config:
+        lines:
+          -  set interfacce {{ item.interface_type }} {{ item.interface }} address {{ item.ipv4_address }}
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.interface }}"
+      when: os == "vyos"
+      tags: set_interface
+
+    - name: set_interface_mikrotik
+      community.routeros.command:
+        commands:
+          -  "/ip address add address={{ item.ipv4_address }} interface={{ item.interface }}"
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.interface }}"
+      when: os == "mikrotik"
+      tags: set_interface
+
+    #
+    # set ssh
+    #
+    - name: set ssh
+      vyos_config:
+        lines: 
+          - set service ssh port 22
+      when: os == "vyos"
+      tags: set_ssh
+
+    #
+    # set credentials
+    #
+    - name: set credentials
+      vyos_config:
+        lines:
+          - set system login user vyos authentication public-keys {{ aibix_pubkey_id }} key {{ aibix_pubkey }}
+          - set system login user vyos authentication public-keys {{ aibix_pubkey_id }} type {{ aibix_pubkey_type }}
+      when: os == "vyos"
+      tags: set_credentials
+      
+
+    #
+    # configure hostname
+    #
+    - name: configure hostname and domain-name
+      vyos.vyos.vyos_system:
+        host_name: "{{ inventory_hostname }}"
+        domain_name: "hel.eth64.de"
+      when: os == "vyos"
+      tags: set_credentials
+
+    #
+    # delete protocols
+    #
+    - name: delete protocols
+      vyos_config:
+        lines:
+          - delete protocols
+      when: os == "vyos"
+      tags: set_credentials
+
+    - name: configure routing
+      block:
+        - name: configure ospf networks
+          with_items: "{{ ospf_network }}"
+          vyos_config:
+            lines:
+              - set protocols ospf area 0 network {{ item }}
+
+        - name: configure ospf interfaces
+          with_items: "{{ ospf_interface }}"
+          vyos_config:
+            lines:
+              - set protocols ospf interface {{ item }}
+
+        - name: configure ospf parameters
+          vyos_config:
+            lines:
+              - set protocols ospf parameters router-id 10.10.255.{{ inventory_hostname[1:2] }}
+      when: (ospf_network is defined) and (ospf_interface is defined) and (os == "vyos")
+      tags: configure_routing
+
+    #
+    # set hw_addr
+    #
+    - name: set eth0 hw_addr
+      vyos_config:
+        lines:
+          - set interface {{ item.interface_type }} {{ item.interface }} hw-id {{ item.hw_address }}
+          - set nat source rule 100 outbound-interface {{ item.interface }}
+          - set nat source rule 100 translation address 'masquerade'
+          - set protocols ospf default-information originate always
+      loop: "{{ interfaces }}"
+      loop_control:
+        label: "{{ item.interface }}"
+      when: item.hw_address is defined
+      when: os == "vyos"
+      tags: set_hwaddr
+
+    #
+    # save config
+    #
+    - name: save config
+      vyos_config:
+        save: true

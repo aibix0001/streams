@@ -1,0 +1,13 @@
+for i in $(sudo qm list | awk '!/(VMID|template)/ {print $1}') ; do sudo qm snapshot $i doodling-$(date +"%y%m%d") ; done
+
+for i in $(sudo qm list | awk '!/(VMID|template)/ {print $1}') ; do sudo qm rollback $i doodling ; done
+
+for x in qm pct ; do for i in $(sudo $x list | awk '!/(VMID|template)/ {print $1}') ; do sudo $x delsnapshot $i doodling-$(date +"%y%m%d") ; done ; done
+
+
+for x in qm pct ; do for i in $(sudo $x list | awk '!/(VMID|template)/ {print $1}') ; do sudo $x rollback $i doodling ; done ; done
+
+for x in qm pct ; do for i in $(sudo $x list | awk '!/(VMID|template)/ {print $1}') ; do sudo $x snapshot $i doodling-$(date +"%y%m%d") ; done ; done
+
+sudo pct listsnapshot 10051 | grep doodling- | awk '{print $2}' | sort
+

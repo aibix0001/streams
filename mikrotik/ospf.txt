@@ -1,0 +1,28 @@
+/interface bridge
+add name=lo
+/routing ospf instance
+add disabled=no name=ospf-instance-1 router-id=10.10.255.11
+/routing ospf area
+add disabled=no instance=ospf-instance-1 name=ospf-area-1
+/ip address
+add address=10.10.255.11 interface=lo network=10.10.255.11
+/routing ospf interface-template
+add area=ospf-area-1 disabled=no interfaces=r1v,r12m,lo networks=10.1.11.0/24,10.11.12.0/24,10.10.255.11/32
+
+
+[admin@r12m] > routing ospf export
+# 2023-10-14 14:16:40 by RouterOS 7.11.2
+# software id = WHMG-D19L
+#
+/routing ospf instance
+add disabled=no name=ospf-instance-1 router-id=10.10.255.12
+add disabled=no name=ospf-instance-2 redistribute=connected router-id=10.10.255.12 version=3
+/routing ospf area
+add disabled=no instance=ospf-instance-1 name=ospf-area-1
+add disabled=no instance=ospf-instance-2 name=ospf-area-2
+/routing ospf interface-template
+add area=ospf-area-1 disabled=no interfaces=r2v,r11m,r13m,lo networks=10.2.12.0/24,10.11.12.0/24,10.10.255.12/32
+add area=ospf-area-2 disabled=no interfaces=r11m,r2v,lo networks=fd00:11:12::/64,fd00:255::/
+
+
+

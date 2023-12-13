@@ -1,0 +1,52 @@
+set interfaces ethernet eth0 address 'dhcp'
+set interfaces ethernet eth0 hw-id '00:04:18:a1:04:00'
+set interfaces ethernet eth0 offload gro
+set interfaces ethernet eth0 offload gso
+set interfaces ethernet eth0 offload sg
+set interfaces ethernet eth0 offload tso
+set interfaces ethernet eth0 vrf 'MGMT'
+set interfaces ethernet eth1 address '10.10.34.4/24'
+set interfaces ethernet eth1 hw-id '00:04:18:f1:04:01'
+set interfaces ethernet eth2 hw-id '00:04:18:f1:04:02'
+set interfaces ethernet eth3 address '172.16.4.1/24'
+set interfaces ethernet eth3 hw-id '00:04:18:f1:04:03'
+set interfaces ethernet eth4 address '10.10.48.4/24'
+set interfaces ethernet eth4 hw-id '00:04:18:f1:04:04'
+set interfaces loopback lo address '10.10.255.4/32'
+set protocols bgp address-family ipv4-unicast network 172.16.4.0/24
+set protocols bgp neighbor 10.10.255.9 address-family ipv4-unicast nexthop-self
+set protocols bgp neighbor 10.10.255.9 description 'r9v'
+set protocols bgp neighbor 10.10.255.9 remote-as '65000'
+set protocols bgp neighbor 10.10.255.9 update-source 'lo'
+set protocols bgp neighbor 10.10.255.10 address-family ipv4-unicast nexthop-self
+set protocols bgp neighbor 10.10.255.10 description 'r10m'
+set protocols bgp neighbor 10.10.255.10 remote-as '65000'
+set protocols bgp neighbor 10.10.255.10 update-source 'lo'
+set protocols bgp parameters router-id '10.10.255.4'
+set protocols bgp system-as '65000'
+set protocols ospf area 0 network '10.10.34.0/24'
+set protocols ospf area 0 network '10.10.48.0/24'
+set protocols ospf area 0 network '10.10.255.4/32'
+set protocols ospf interface eth1
+set protocols ospf interface eth4
+set protocols ospf interface lo
+set protocols ospf parameters router-id '10.10.255.4'
+set service ntp server 1.pool.ntp.org
+set service ntp server 2.pool.ntp.org
+set service ssh client-keepalive-interval '180'
+set service ssh port '22'
+set service ssh vrf 'MGMT'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system host-name 'r4v'
+set system login user vyos authentication encrypted-password '$6$rounds=656000$X4SqfEPBm/Q1lElO$l6vfxtYw5hinng1fw9aEfk2Zgzdu5tzLYStpeIpTNzCC8cYPs82oP2tdlPmZB3iAnOj4r1Y.pw08sTclVnSGr.'
+set system login user vyos authentication public-keys aibix@hel key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
+set system login user vyos authentication public-keys aibix@hel type 'ssh-rsa'
+set system name-server '1.1.1.1'
+set vrf name MGMT table '2030'

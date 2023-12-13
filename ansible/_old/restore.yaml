@@ -1,0 +1,16 @@
+---
+- name: restore vyos config
+  hosts: router
+  # throttle: 1
+  gather_facts: no
+
+  tasks:
+  - name: delete protocols
+    vyos_config:
+      lines:
+        - delete protocols
+
+  - name: restore config
+    vyos_config:
+      src: "/home/aibix/lnr/ansible_out/{{ inventory_hostname }}"
+      save: true

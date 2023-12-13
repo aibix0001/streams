@@ -1,0 +1,14 @@
+[local]
+localhost
+
+[qemu]
+localhost
+
+[vmware]
+localhost
+
+[hyperv]
+localhost
+
+[vagrant_libvirt]
+localhost

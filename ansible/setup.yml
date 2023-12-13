@@ -1,0 +1,15 @@
+---
+
+- hosts: router
+  gather_facts: "no"
+
+  connection: network_cli
+
+  roles:
+    - role: vyos_setup
+      tags: vyos
+      when: os == "vyos"
+    - role: mtk_setup
+      tags: mikrotik
+      when: os == "mikrotik"
+    
