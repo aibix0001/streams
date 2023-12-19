@@ -314,7 +314,7 @@ router:
           ipv4_address: 10.10.78.7/24
         - interface: eth4
           interface_type: ethernet
-          ipv4_address: 10.10.79.2/24
+          ipv4_address: 10.10.79.7/24
       ospf:
         router_id: 10.10.255.27
         v4:
