@@ -1,1 +1,76 @@
-/etc/network/interfaces.d/sdn
+#version:23
+
+auto evpnnet1
+iface evpnnet1
+	address 10.0.1.1/24
+	hwaddress BC:24:11:5A:89:E7
+	bridge_ports vxlan_evpnnet1
+	bridge_stp off
+	bridge_fd 0
+	mtu 1450
+	ip-forward on
+	arp-accept on
+	vrf vrf_evpnzone
+
+auto evpnnet2
+iface evpnnet2
+	address 10.0.2.1/24
+	hwaddress BC:24:11:5A:89:E7
+	bridge_ports vxlan_evpnnet2
+	bridge_stp off
+	bridge_fd 0
+	mtu 1450
+	ip-forward on
+	arp-accept on
+	vrf vrf_evpnzone
+
+auto vrf_evpnzone
+iface vrf_evpnzone
+	vrf-table auto
+	post-up ip route add vrf vrf_evpnzone unreachable default metric 4278198272
+
+auto vrfbr_evpnzone
+iface vrfbr_evpnzone
+	bridge-ports vrfvx_evpnzone
+	bridge_stp off
+	bridge_fd 0
+	mtu 1450
+	vrf vrf_evpnzone
+
+auto vrfvx_evpnzone
+iface vrfvx_evpnzone
+	vxlan-id 10000
+	vxlan-local-tunnelip 192.168.224.55
+	bridge-learning off
+	bridge-arp-nd-suppress on
+	mtu 1450
+
+auto vxlan_evpnnet1
+iface vxlan_evpnnet1
+	vxlan-id 11000
+	vxlan-local-tunnelip 192.168.224.55
+	bridge-learning off
+	bridge-arp-nd-suppress on
+	mtu 1450
+
+auto vxlan_evpnnet2
+iface vxlan_evpnnet2
+	vxlan-id 12000
+	vxlan-local-tunnelip 192.168.224.55
+	bridge-learning off
+	bridge-arp-nd-suppress on
+	mtu 1450
+
+auto vxlan_vxnet
+iface vxlan_vxnet
+	vxlan-id 1000000
+	vxlan_remoteip 192.168.224.66
+	mtu 1450
+
+auto vxnet
+iface vxnet
+	bridge_ports vxlan_vxnet
+	bridge_stp off
+	bridge_fd 0
+	mtu 1450
+	alias vxnet
