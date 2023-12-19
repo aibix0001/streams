@@ -1,0 +1,38 @@
+---
+- name: VyOS - install new image and schedule machine reboot.
+  gather_facts: False
+  vars:
+    vyos_version: "1.5-rolling-202312190024"
+    vyos_dir: "vyos-files/"
+    vyos_file: "vyos-{{vyos_version}}-amd64.iso"
+  hosts:
+    - router
+
+  tasks:
+    - name: "Copying {{vyos_file}} to system"
+      net_put:
+        src: "{{ vyos_dir }}{{ vyos_file }}"
+        dest: "{{ vyos_file }}"
+
+    - name: "Installing {{vyos_version}} on system"
+      cli_command:
+        command: add system image "{{ vyos_file }}"
+        newline: True
+        check_all: True
+        prompt:
+        - 'What would you like to name this image'
+        - 'directory and config file'
+        - 'current configuration'
+        answer:
+        - "{{ vyos_version }}"
+        - 'Yes'
+        - 'Yes'
+
+    - name: Cleanup installation file
+      cli_command:
+        command: "rm {{ vyos_file }}"
+        
+    - name: reboot
+      cli_command:
+        command: "reboot"
+

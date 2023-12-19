@@ -1,9 +1,26 @@
 router:
   vars:
-    aibix_pubkey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCPWJdrzcquOHSts5KPhbP0NZf5gczoZL20o/a4gd6kI3DlgSBBS0fRsoCryhYf31nH978jCQL009SFanBkVXoZFGGZ9GfaPLdCBq4hbeF3upDBFLbL3kIc5rnv6NRzN5P2pfa5DTLGCvrK+kA4vNlHk5dYjH8NlgHC6Yr9ldLFBucbmIhbE+zt43qY+DuXOQYW9LFpYSO/91QRqW9Y3AqqnPOD4tXLlOsorKa2KFoQO7F25BGx4a5vp3Yg1oYlaTzCJzjOELzBNQ8LnH4i11PN/+rT0S1B5kg8nNJNljvxX705Nzg/2bDwd9vbxOgL0tUP/gkppNs2Y4gJ3G/gXWs/jSu8mt2hqt+Gf3AWl2v5AI9Dr6Jj3iTIAtg7kJTiIlhZLZVY7Iq2C6JzviMFq6T9jnHrLDA MkDiajHZcw3CNt/jayNKi5jD9uSggEOl4OGDMClnN6V/txXJTZjbYmd+fbIkNTQv9vIn9e0ThKbsP/lStH5dfNVaDZo6gbhmee0='
-    aibix_pubkey_id: aibix@hel
-    aibix_pubkey_type: 'ssh-rsa'
+    aibix_pubkey: 'AAAAC3NzaC1lZDI1NTE5AAAAIJhIGgYUf/Sl4xr4uv+nrMbpDhulZWQxynX5OBTvalsz'
+    aibix_pubkey_id: aibix@minismox
+    aibix_pubkey_type: 'ssh-ed25519'
     
+#######################################################################
+#######################################################################
+####                                                               ####
+####    ###########      ##########   #########       #####        ####
+####    ###########    ###########    ##########    #########      ####
+####        ###       ####            ###     ###  ###     ###     ####
+####        ###       ####            ###     ###           ###    ####
+####        ###        #########      ##########            ###    ####
+####        ###         #########     #######            ####      ####
+####        ###                ####   ###             ####         ####
+####        ###                 ###   ###           ####           ####
+####        ###                 ###   ###         ####             ####
+####   ############     ##########    ###       ###############    ####
+####   ############    ##########     ###       ###############    ####
+####                                                               ####
+#######################################################################
+#######################################################################
 
   hosts:
     r21v:
@@ -161,7 +178,7 @@ router:
           ipv4_address: 10.10.34.4/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 172.16.24.1/24
+          ipv4_address: 10.10.200.2/30
         - interface: eth4
           interface_type: ethernet
           ipv4_address: 10.10.48.2/24
@@ -179,9 +196,9 @@ router:
       bgp:
         router_id: 10.10.255.24
         as: 65002
-        networks:
-          ipv4_unicast:
-            - 172.16.24.0/24
+        # networks:
+        #   ipv4_unicast:
+        #     - 172.16.24.0/24
         neighbors_rr_client:
           - ipv4_address: 10.10.255.29
             description: r29v

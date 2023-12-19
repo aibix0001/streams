@@ -1,0 +1,53 @@
+---
+- name: VyOS - install new image and schedule machine reboot.
+  gather_facts: False
+  connection: ansible.netcommon.network_cli
+  vars:
+    vyos_version: "1.5-rolling-202312190024"
+    vyos_dir: "vyos-files/"
+    vyos_file: "vyos-{{vyos_version}}-amd64.iso"
+    ansible_user: vyos
+    ansible_network_os: vyos.vyos.vyos
+
+  hosts:
+    - router
+
+  tasks:
+    - name: "Copying {{vyos_file}} to system"
+      net_put:
+        src: "{{ vyos_dir }}{{ vyos_file }}"
+        dest: "{{ vyos_file }}"
+
+    - name: "Installing {{vyos_version}} on system"
+      cli_command:
+        command: add system image "{{ vyos_file }}"
+        newline: True
+        check_all: True
+        prompt:
+        - 'What would you like to name this image'
+        - 'Would you like to set the new image as the default one for boot'
+        - 'An active configuration was found'
+        - 'Would you like to copy SSH host keys'
+        answer:
+        - "{{ vyos_version }}"
+        - 'y'
+        - 'y'
+        - 'y'
+
+    - name: Cleanup installation file
+      cli_command:
+        command: "rm {{ vyos_file }}"
+        
+    - name: reboot
+      # ansible.builtin.reboot:
+      #   msg: "rebooting"
+        
+      cli_command:
+        command: "reboot now"
+        # newline: True
+        # check_all: True
+        # prompt:
+        # - 'Are you sure you want to reboot this system'
+        # answer:
+        # - 'y'
+        

@@ -1,0 +1,12 @@
+---
+
+- hosts: router
+  gather_facts: "no"
+
+  connection: network_cli
+
+  roles:
+    - role: vyos_update
+      tags: vyos
+      when: os == "vyos"
+    

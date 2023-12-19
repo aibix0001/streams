@@ -60,3 +60,6 @@ tags
 # qcow2 images
 *.qcow2
 
+# iso images
+*.iso
+*.iso.gz

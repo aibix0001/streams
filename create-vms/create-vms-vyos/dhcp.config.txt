@@ -178,3 +178,83 @@
                     "ip-address": "10.20.30.29",
                     "client-classes": [ "KnownClients" ]
                 },
+                {
+                    "hw-address": "02:04:18:A3:01:00",
+                    "ip-address": "10.20.30.31",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:02:00",
+                    "ip-address": "10.20.30.32",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:03:00",
+                    "ip-address": "10.20.30.33",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:04:00",
+                    "ip-address": "10.20.30.34",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:05:00",
+                    "ip-address": "10.20.30.35",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:06:00",
+                    "ip-address": "10.20.30.36",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:07:00",
+                    "ip-address": "10.20.30.37",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:08:00",
+                    "ip-address": "10.20.30.38",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A3:09:00",
+                    "ip-address": "10.20.30.39",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
+                {
+                    "hw-address": "02:04:18:A2:09:00",
+                    "ip-address": "10.20.30.29",
+                    "client-classes": [ "KnownClients" ]
+                },
