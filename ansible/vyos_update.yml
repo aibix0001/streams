@@ -39,15 +39,6 @@
         command: "rm {{ vyos_file }}"
         
     - name: reboot
-      # ansible.builtin.reboot:
-      #   msg: "rebooting"
-        
       cli_command:
         command: "reboot now"
-        # newline: True
-        # check_all: True
-        # prompt:
-        # - 'Are you sure you want to reboot this system'
-        # answer:
-        # - 'y'
         
