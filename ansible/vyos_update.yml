@@ -3,7 +3,7 @@
   gather_facts: False
   connection: ansible.netcommon.network_cli
   vars:
-    vyos_version: "1.5-rolling-202312180024"
+    #vyos_version: "1.5-rolling-202312180024"
     vyos_dir: "vyos-files/"
     vyos_file: "vyos-{{vyos_version}}-amd64.iso"
     ansible_user: vyos
@@ -41,4 +41,4 @@
     - name: reboot
       cli_command:
         command: "reboot now"
-        
+      #when: reboot is defined

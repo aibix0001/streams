@@ -23,14 +23,14 @@ router:
 #######################################################################
 
   hosts:
-    r21v:
+    p2r1v:
       os: "vyos"
       ansible_host: 10.20.30.21
-      ansible_hostname: "r21v"
+      ansible_hostname: "p2r1v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.21/32
+          ipv4_address: 10.2.255.21/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
@@ -39,33 +39,42 @@ router:
           ipv4_address: dhcp
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.12.1/24
+          ipv4_address: 10.2.12.1/24
         - interface: eth4
           interface_type: ethernet
-          ipv4_address: 10.10.15.1/24
+          ipv4_address: 10.2.15.1/24
       # static:
       #   routes:
       #     - destination: 0.0.0.0/0
       #       gateway: 172.16.8.1
       ospf:
-        router_id: 10.10.255.21
+        router_id: 10.2.255.21
         v4:
           area: 0
           default_information: always
           interfaces:
             - interface: eth3
-              network: 10.10.12.0/24
+              network: 10.2.12.0/24
             - interface: eth4
-              network: 10.10.15.0/24
+              network: 10.2.15.0/24
             - interface: lo
-              network: 10.10.255.21/32
+              network: 10.2.255.21/32
+      mpls:
+        interfaces:
+          - interface: eth3
+          - interface: eth4
+        ldp:
+          router_id: 10.2.255.21
+          interfaces:
+            - interface: eth3
+            - interface: eth4
       bgp:
-        router_id: 10.10.255.21
+        router_id: 10.2.255.21
         as: 65002
         #networks:
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
       nat:
@@ -74,146 +83,177 @@ router:
         interface: eth1
 
 
-    r22v:
+    p2r2v:
       os: "vyos"
       ansible_host: 10.20.30.22
-      ansible_hostname: "r22v"
+      ansible_hostname: "p2r2v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.22/32
+          ipv4_address: 10.2.255.22/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth1
           interface_type: ethernet
-          ipv4_address: 10.10.12.2/24
+          ipv4_address: 10.2.12.2/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.23.2/24
+          ipv4_address: 10.2.23.2/24
         - interface: eth4
           interface_type: ethernet
-          ipv4_address: 10.10.26.2/24
+          ipv4_address: 10.2.26.2/24
       ospf:
-        router_id: 10.10.255.22
+        router_id: 10.2.255.22
         v4:
           area: 0
           interfaces:
             - interface: eth1
-              network: 10.10.12.0/24
+              network: 10.2.12.0/24
             - interface: eth3
-              network: 10.10.23.0/24
+              network: 10.2.23.0/24
             - interface: eth4
-              network: 10.10.26.0/24
+              network: 10.2.26.0/24
             - interface: lo
-              network: 10.10.255.22/32
+              network: 10.2.255.22/32
+      mpls:
+        interfaces:
+          - interface: eth1
+          - interface: eth3
+          - interface: eth4
+        ldp:
+          router_id: 10.2.255.22
+          interfaces:
+            - interface: eth1
+            - interface: eth3
+            - interface: eth4
       bgp:
-        router_id: 10.10.255.22
+        router_id: 10.2.255.22
         as: 65002
         #networks:
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r23v:
+    p2r3v:
       os: "vyos"
       ansible_host: 10.20.30.23
-      ansible_hostname: "r23v"
+      ansible_hostname: "p2r3v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.23/32
+          ipv4_address: 10.2.255.23/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth1
           interface_type: ethernet
-          ipv4_address: 10.10.23.3/24
+          ipv4_address: 10.2.23.3/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.34.3/24
+          ipv4_address: 10.2.34.3/24
         - interface: eth4
           interface_type: ethernet
-          ipv4_address: 10.10.37.2/24
+          ipv4_address: 10.2.37.2/24
       ospf:
-        router_id: 10.10.255.23
+        router_id: 10.2.255.23
         v4:
           area: 0
           interfaces:
             - interface: eth1
-              network: 10.10.23.0/24
+              network: 10.2.23.0/24
             - interface: eth3
-              network: 10.10.34.0/24
+              network: 10.2.34.0/24
             - interface: eth4
-              network: 10.10.37.0/24
+              network: 10.2.37.0/24
             - interface: lo
-              network: 10.10.255.23/32
+              network: 10.2.255.23/32
+      mpls:
+        interfaces:
+          - interface: eth1
+          - interface: eth3
+          - interface: eth4
+        ldp:
+          router_id: 10.2.255.23
+          interfaces:
+            - interface: eth1
+            - interface: eth3
+            - interface: eth4
       bgp:
-        router_id: 10.10.255.23
+        router_id: 10.2.255.23
         as: 65002
         #networks:
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r24v:
+    p2r4v:
       os: "vyos"
       ansible_host: 10.20.30.24
-      ansible_hostname: "r24v"
+      ansible_hostname: "p2r4v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.24/32
+          ipv4_address: 10.2.255.24/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth1
           interface_type: ethernet
-          ipv4_address: 10.10.34.4/24
+          ipv4_address: 10.2.34.4/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.200.2/30
+          ipv4_address: 10.2.200.2/30
         - interface: eth4
           interface_type: ethernet
-          ipv4_address: 10.10.48.2/24
+          ipv4_address: 10.2.48.2/24
       ospf:
-        router_id: 10.10.255.24
+        router_id: 10.2.255.24
         v4:
           area: 0
           interfaces:
             - interface: eth1
-              network: 10.10.34.0/24
+              network: 10.2.34.0/24
             - interface: eth4
-              network: 10.10.48.0/24
+              network: 10.2.48.0/24
             - interface: lo
-              network: 10.10.255.24/32
+              network: 10.2.255.24/32
+      mpls:
+        interfaces:
+          - interface: eth1
+          - interface: eth4
+        ldp:
+          router_id: 10.2.255.24
+          interfaces:
+            - interface: eth1
+            - interface: eth4
       bgp:
-        router_id: 10.10.255.24
+        router_id: 10.2.255.24
         as: 65002
         # networks:
         #   ipv4_unicast:
         #     - 172.16.24.0/24
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r25v:
+    p2r5v:
       os: "vyos"
       ansible_host: 10.20.30.25
-      ansible_hostname: "r25v"
+      ansible_hostname: "p2r5v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.25/32
+          ipv4_address: 10.2.255.25/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
@@ -222,227 +262,280 @@ router:
           ipv4_address: 172.16.25.1/24
         - interface: eth2
           interface_type: ethernet
-          ipv4_address: 10.10.15.5/24
+          ipv4_address: 10.2.15.5/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.56.2/24
+          ipv4_address: 10.2.56.2/24
       ospf:
-        router_id: 10.10.255.25
+        router_id: 10.2.255.25
         v4:
           area: 0
           interfaces:
             - interface: eth2
-              network: 10.10.15.0/24
+              network: 10.2.15.0/24
             - interface: eth3
-              network: 10.10.56.0/24
+              network: 10.2.56.0/24
             - interface: lo
-              network: 10.10.255.25/32
+              network: 10.2.255.25/32
+      mpls:
+        interfaces:
+          - interface: eth2
+          - interface: eth3
+        ldp:
+          router_id: 10.2.255.25
+          interfaces:
+            - interface: eth2
+            - interface: eth3
       bgp:
-        router_id: 10.10.255.25
+        router_id: 10.2.255.25
         as: 65002
         #networks:
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r26v:
+    p2r6v:
       os: "vyos"
       ansible_host: 10.20.30.26
-      ansible_hostname: "r26v"
+      ansible_hostname: "p2r6v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.26/32
+          ipv4_address: 10.2.255.26/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth1
           interface_type: ethernet
-          ipv4_address: 10.10.56.6/24
+          ipv4_address: 10.2.56.6/24
         - interface: eth2
           interface_type: ethernet
-          ipv4_address: 10.10.26.6/24
+          ipv4_address: 10.2.26.6/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.67.2/24
+          ipv4_address: 10.2.67.2/24
       ospf:
-        router_id: 10.10.255.26
+        router_id: 10.2.255.26
         v4:
           area: 0
           interfaces:
             - interface: eth1
-              network: 10.10.56.0/24
+              network: 10.2.56.0/24
             - interface: eth2
-              network: 10.10.26.0/24
+              network: 10.2.26.0/24
             - interface: eth3
-              network: 10.10.67.0/24
+              network: 10.2.67.0/24
             - interface: lo
-              network: 10.10.255.26/32
+              network: 10.2.255.26/32
+      mpls:
+        interfaces:
+          - interface: eth1
+          - interface: eth2
+          - interface: eth3
+        ldp:
+          router_id: 10.2.255.26
+          interfaces:
+            - interface: eth1
+            - interface: eth2
+            - interface: eth3
       bgp:
-        router_id: 10.10.255.26
+        router_id: 10.2.255.26
         as: 65002
         #networks:
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r27v:
+    p2r7v:
       os: "vyos"
       ansible_host: 10.20.30.27
-      ansible_hostname: "r27v"
+      ansible_hostname: "p2r7v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.27/32
+          ipv4_address: 10.2.255.27/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth1
           interface_type: ethernet
-          ipv4_address: 10.10.67.7/24
+          ipv4_address: 10.2.67.7/24
         - interface: eth2
           interface_type: ethernet
-          ipv4_address: 10.10.37.7/24
+          ipv4_address: 10.2.37.7/24
         - interface: eth3
           interface_type: ethernet
-          ipv4_address: 10.10.78.7/24
+          ipv4_address: 10.2.78.7/24
         - interface: eth4
           interface_type: ethernet
-          ipv4_address: 10.10.79.7/24
+          ipv4_address: 10.2.79.7/24
       ospf:
-        router_id: 10.10.255.27
+        router_id: 10.2.255.27
         v4:
           area: 0
           interfaces:
             - interface: eth1
-              network: 10.10.67.0/24
+              network: 10.2.67.0/24
             - interface: eth2
-              network: 10.10.37.0/24
+              network: 10.2.37.0/24
             - interface: eth3
-              network: 10.10.78.0/24
+              network: 10.2.78.0/24
             - interface: eth4
-              network: 10.10.79.0/24
+              network: 10.2.79.0/24
             - interface: lo
-              network: 10.10.255.27/32
+              network: 10.2.255.27/32
+      mpls:
+        interfaces:
+          - interface: eth1
+          - interface: eth2
+          - interface: eth3
+          - interface: eth4
+        ldp:
+          router_id: 10.2.255.27
+          interfaces:
+            - interface: eth1
+            - interface: eth2
+            - interface: eth3
+            - interface: eth4
       bgp:
-        router_id: 10.10.255.27
+        router_id: 10.2.255.27
         as: 65002
         #networks:
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r28v:
+    p2r8v:
       os: "vyos"
       ansible_host: 10.20.30.28
-      ansible_hostname: "r28v"
+      ansible_hostname: "p2r8v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.28/32
+          ipv4_address: 10.2.255.28/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth1
           interface_type: ethernet
-          ipv4_address: 10.10.78.8/24
+          ipv4_address: 10.2.78.8/24
         - interface: eth2
           interface_type: ethernet
-          ipv4_address: 10.10.48.8/24
+          ipv4_address: 10.2.48.8/24
         - interface: eth3
           interface_type: ethernet
           ipv4_address: 172.16.28.1/24
       ospf:
-        router_id: 10.10.255.28
+        router_id: 10.2.255.28
         v4:
           area: 0
           interfaces:
             - interface: eth1
-              network: 10.10.78.0/24
+              network: 10.2.78.0/24
             - interface: eth2
-              network: 10.10.48.0/24
+              network: 10.2.48.0/24
             - interface: lo
-              network: 10.10.255.28/32
+              network: 10.2.255.28/32
+      mpls:
+        interfaces:
+          - interface: eth1
+          - interface: eth2
+          - interface: eth4
+        ldp:
+          router_id: 10.2.255.28
+          interfaces:
+            - interface: eth1
+            - interface: eth2
+            - interface: eth4
       bgp:
-        router_id: 10.10.255.28
+        router_id: 10.2.255.28
         as: 65002
         networks:
           ipv4_unicast:
             - 172.16.28.0/24
         neighbors_rr_client:
-          - ipv4_address: 10.10.255.29
-            description: r29v
+          - ipv4_address: 10.2.255.29
+            description: p2r9v
             remote_as: 65002
             update_source: lo
 
 
-    r29v:
+    p2r9v:
       os: "vyos"
       ansible_host: 10.20.30.29
-      ansible_hostname: "r29v"
+      ansible_hostname: "p2r9v"
       interfaces:
         - interface: lo
           interface_type: loopback
-          ipv4_address: 10.10.255.29/32
+          ipv4_address: 10.2.255.29/32
         - interface: eth0
           interface_type: ethernet
           ipv4_address: dhcp
         - interface: eth2
           interface_type: ethernet
-          ipv4_address: 10.10.79.9/24
+          ipv4_address: 10.2.79.9/24
       ospf:
-        router_id: 10.10.255.29
+        router_id: 10.2.255.29
         v4:
           area: 0
           interfaces:
             - interface: eth2
-              network: 10.10.79.0/24
+              network: 10.2.79.0/24
             - interface: lo
-              network: 10.10.255.29/32
+              network: 10.2.255.29/32
+      mpls:
+        interfaces:
+          - interface: eth2
+          - interface: eth3
+        ldp:
+          router_id: 10.2.255.29
+          interfaces:
+            - interface: eth2
+            - interface: eth3
       bgp:
-        router_id: 10.10.255.29
+        router_id: 10.2.255.29
         as: 65002
         #networks:
         neighbors_rr_server:
-          - ipv4_address: 10.10.255.21
-            description: r21v
+          - ipv4_address: 10.2.255.21
+            description: p2r1v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.22
-            description: r22v
+          - ipv4_address: 10.2.255.22
+            description: p2r2v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.23
-            description: r23v
+          - ipv4_address: 10.2.255.23
+            description: p2r3v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.24
-            description: r24v
+          - ipv4_address: 10.2.255.24
+            description: p2r4v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.25
-            description: r25v
+          - ipv4_address: 10.2.255.25
+            description: p2r5v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.26
-            description: r26v
+          - ipv4_address: 10.2.255.26
+            description: p2r6v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.27
-            description: r27v
+          - ipv4_address: 10.2.255.27
+            description: p2r7v
             remote_as: 65002
             update_source: lo
-          - ipv4_address: 10.10.255.28
-            description: r28v
+          - ipv4_address: 10.2.255.28
+            description: p2r8v
             remote_as: 65002
             update_source: lo
 

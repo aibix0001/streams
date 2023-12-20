@@ -41,7 +41,27 @@
         - set system name-server 1.1.1.1
     tags: nameserver
     when: os == "vyos"
-    
+
+  - block:
+      - name: configure_mpls_interfaces
+        vyos_config:
+          lines:
+            - set protocols mpls interface {{ item.interface }}
+        loop: "{{ mpls.interfaces }}"
+        loop_control:
+          label: "{{ item.interface }}"
+      - name: configure_mpls_ldp_interfaces
+        vyos_config:
+          lines:
+            - set protocols mpls ldp router-id {{ mpls.ldp.router_id }}
+            - set protocols mpls ldp discovery transport-ipv4-address {{ mpls.ldp.router_id }}
+            - set protocols mpls ldp interface {{ item.interface }}
+        loop: "{{ mpls.ldp.interfaces }}"
+        loop_control:
+          label: "{{ item.interface }}"
+    tags: mpls
+    when: os == "vyos" and mpls is defined
+          
   - name: configure_ospf_parameters
     vyos_config:
       lines:
@@ -66,7 +86,7 @@
           set protocols ospf default-information originate {{ ospf.v4.default_information }}
     tags: ospf
     when: os == "vyos" and ospf.v4.default_information is defined
-    
+
   - name: configure_bgp_parameters
     vyos_config:
       lines:
@@ -98,7 +118,7 @@
       label: "{{ item.ipv4_address }}"
     tags: bgp
     when: os == "vyos" and bgp.neighbors_rr_client is defined
-    
+
   - name: configure_bgp_neighbors_rr_server
     vyos_config:
       lines:
@@ -111,7 +131,7 @@
       label: "{{ item.ipv4_address }}"
     tags: bgp
     when: os == "vyos" and bgp.neighbors_rr_server is defined
-    
+
   - name: configure_bgp_neighbors_rr_peer
     vyos_config:
       lines:
@@ -125,7 +145,7 @@
       label: "{{ item.ipv4_address }}"
     tags: bgp
     when: os == "vyos" and bgp.neighbors_rr_peer is defined
-    
+
   - name: configure_bgp_neighbors
     vyos_config:
       lines:
@@ -146,7 +166,7 @@
         - set nat {{ nat.type }} rule 1 translation address '{{ nat.translation }}'
     tags: nat
     when: os == "vyos" and nat is defined
-    
+
   - name: save config
     vyos_config:
       save: true

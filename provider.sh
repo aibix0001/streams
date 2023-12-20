@@ -23,31 +23,44 @@ do
 done
 
 #sleeping
-echo "sleeping 45 sec"
-sleep 45
+echo "sleeping 60 sec"
+sleep 60
 
 #update and reboot
 cd ${HOME}/streams/ansible
 echo "system upgrade"
-ansible-playbook -i inventories/inventory${provider}.yaml vyos_update.yml
+#ansible-playbook -i inventories/inventory${provider}.yaml vyos_update.yml
+ansible-playbook -i inventories/inventory${provider}.yaml vyos_update.yml -e "vyos_version=$(ls -t ${HOME}/streams/ansible/vyos-files/ | head -n 1 | sed -e 's/^vyos-//' | sed -e 's/-amd.*$//')"
+
+#sleeping
+echo "sleeping 60 sec, wating for first reboot"
+sleep 60
 
 #reboot (hart; wegen kaputtem cloud-init)
-echo "rebooting"
+echo "hard reboot due to broken cloud-init"
 for r in {1..9}
 do
     sudo qm reset ${node}0${provider}00${r}
+    sleep 10
 done
 
 #sleeping
-echo "sleeping 90 sec, wating for reboot"
+echo "sleeping 90 sec, wating for second reboot"
 sleep 90
 
 #configuring
 echo "configuring network"
 ansible-playbook -i inventories/inventory${provider}.yaml setup.yml
 
+#remove cdrom
+echo "removing cdrom"
+for r in {1..9}
+do
+    sudo qm set ${node}0${provider}00${r} --ide2 media=cdrom,file=none
+done
+
 #reboot (muss nicht sein, aber mal checken schadet ja nicht)
-echo "rebooting"
+echo "third reboot"
 ansible-playbook -i inventories/inventory${provider}.yaml vyos_reboot.yml
 
 echo "all done, enjoy!"

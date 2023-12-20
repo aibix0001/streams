@@ -522,3 +522,266 @@ router:
             update_source: lo
 
 
+    r10m:
+      os: "mikrotik"
+      ansible_host: 10.20.30.110
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.1.255.10/32
+        - interface: p1r8v
+          interface_type: ethernet
+          ipv4_address: 10.8.10.1.24
+        - interface: p1r9v
+          interface_type: ethernet
+          ipv4_address: 10.9.10.1.24
+      ospf:
+        router_id: 10.1.255.10
+        v4:
+          instance: ospf-instance-v4
+          area: ospf-area-v4
+          interfaces:
+            - interface: p1r9v
+              network: 10.9.10.0/24
+            - interface: p1r8v
+              network: 10.8.10.0/24
+            - interface: lo
+              network: 10.1.255.10/32
+        v6:
+          instance: ospf-instance-b6
+          area: ospf-area-v6
+          interfaces:
+            - interface: p1r8v
+              network: fd00:8:10::/64
+            - interface: p1r9v
+              network: fd00:9:10::/64
+            - interface: lo
+              network: fd00:255::10/64
+      bgp:
+        router_id: 10.1.255.10
+        as: 65001
+        #networks:
+        neighbors:
+          - ipv4_address: 10.1.255.1
+            description: p1r1v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.2
+            description: p1r2v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.3
+            description: p1r3v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.4
+            description: p1r4v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.5
+            description: p1r5v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.6
+            description: p1r6v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.7
+            description: p1r7v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.8
+            description: p1r8v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.9
+            description: p1r9v
+            remote_as: 65001
+            update_source: lo
+
+          - ipv4_address: 10.1.255.11
+            description: r11m
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.12
+            description: r12m
+            remote_as: 65001
+            update_source: lo
+
+
+    r11m:
+      os: "mikrotik"
+      ansible_host: 10.20.30.111
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.1.255.11/32
+        - interface: WAN
+          interface_type: ethernet
+          ipv4_address: dhcp
+          hw_address: 00:50:56:00:BE:28
+        - interface: p1r1v
+          interface_type: ethernet
+          ipv4_address: 10.1.11.11/24
+        - interface: r12m
+          interface_type: ethernet
+          ipv4_address: 10.11.12.11/24
+      ospf:
+        router_id: 10.1.255.11
+        v4:
+          instance: ospf-instance-v4
+          area: ospf-area-v4
+          interfaces:
+            - interface: r12m
+              network: 10.11.12.0/24
+            - interface: p1r1v
+              network: 10.1.11.0/24
+            - interface: lo
+              network: 10.1.255.11/32
+        v6:
+          instance: ospf-instance-b6
+          area: ospf-area-v6
+          interfaces:
+            - interface: r12m
+              network: fd00:11:12::/64
+            - interface: lo
+              network: fd00:255::11/64
+      bgp:
+        router_id: 10.1.255.11
+        as: 65001
+        #networks:
+        neighbors:
+          - ipv4_address: 10.1.255.1
+            description: p1r1v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.2
+            description: p1r2v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.3
+            description: p1r3v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.4
+            description: p1r4v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.5
+            description: p1r5v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.6
+            description: p1r6v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.7
+            description: p1r7v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.8
+            description: p1r8v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.9
+            description: p1r9v
+            remote_as: 65001
+            update_source: lo
+
+          - ipv4_address: 10.1.255.10
+            description: r10m
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.12
+            description: r12m
+            remote_as: 65001
+            update_source: lo
+
+
+    r12m:
+      os: "mikrotik"
+      ansible_host: 10.20.30.112
+      interfaces:
+        - interface: lo
+          interface_type: loopback
+          ipv4_address: 10.1.255.12/32
+        - interface: r11m
+          interface_type: ethernet
+          ipv4_address: 10.11.12.12/24
+        - interface: p1r2v
+          interface_type: ethernet
+          ipv4_address: 10.2.12.12/24
+        - interface: r13m
+          interface_type: ethernet
+          ipv4_address: 10.11.13.12/24
+      ospf:
+        router_id: 10.1.255.12
+        v4:
+          instance: ospf-instance-v4
+          area: ospf-area-v4
+          interfaces:
+            - interface: r11m
+              network: 10.11.12.0/24
+            - interface: p1r2v
+              network: 10.2.12.0/24
+            - interface: lo
+              network: 10.1.255.12/32
+        v6:
+          instance: ospf-instance-b6
+          area: ospf-area-v6
+          interfaces:
+            - interface: r11m
+              network: fd00:11:12::/64
+            - interface: lo
+              network: fd00:255::12/64
+      bgp:
+        router_id: 10.1.255.12
+        as: 65001
+        #networks:
+        neighbors:
+          - ipv4_address: 10.1.255.1
+            description: p1r1v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.2
+            description: p1r2v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.3
+            description: p1r3v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.4
+            description: p1r4v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.5
+            description: p1r5v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.6
+            description: p1r6v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.7
+            description: p1r7v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.8
+            description: p1r8v
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.9
+            description: p1r9v
+            remote_as: 65001
+            update_source: lo
+
+          - ipv4_address: 10.1.255.10
+            description: r10m
+            remote_as: 65001
+            update_source: lo
+          - ipv4_address: 10.1.255.11
+            description: r11m
+            remote_as: 65001
+            update_source: lo
+
