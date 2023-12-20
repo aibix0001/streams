@@ -66,6 +66,7 @@ router:
         ldp:
           router_id: 10.2.255.21
           interfaces:
+            - interface: lo
             - interface: eth3
             - interface: eth4
       bgp:
@@ -124,6 +125,7 @@ router:
         ldp:
           router_id: 10.2.255.22
           interfaces:
+            - interface: lo
             - interface: eth1
             - interface: eth3
             - interface: eth4
@@ -179,6 +181,7 @@ router:
         ldp:
           router_id: 10.2.255.23
           interfaces:
+            - interface: lo
             - interface: eth1
             - interface: eth3
             - interface: eth4
@@ -231,6 +234,7 @@ router:
         ldp:
           router_id: 10.2.255.24
           interfaces:
+            - interface: lo
             - interface: eth1
             - interface: eth4
       bgp:
@@ -284,6 +288,7 @@ router:
         ldp:
           router_id: 10.2.255.25
           interfaces:
+            - interface: lo
             - interface: eth2
             - interface: eth3
       bgp:
@@ -338,6 +343,7 @@ router:
         ldp:
           router_id: 10.2.255.26
           interfaces:
+            - interface: lo
             - interface: eth1
             - interface: eth2
             - interface: eth3
@@ -399,6 +405,7 @@ router:
         ldp:
           router_id: 10.2.255.27
           interfaces:
+            - interface: lo
             - interface: eth1
             - interface: eth2
             - interface: eth3
@@ -453,6 +460,7 @@ router:
         ldp:
           router_id: 10.2.255.28
           interfaces:
+            - interface: lo
             - interface: eth1
             - interface: eth2
             - interface: eth4
@@ -499,6 +507,7 @@ router:
         ldp:
           router_id: 10.2.255.29
           interfaces:
+            - interface: lo
             - interface: eth2
             - interface: eth3
       bgp:
